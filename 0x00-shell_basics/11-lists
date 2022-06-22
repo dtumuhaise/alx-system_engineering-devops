@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -l -a -R /0x00-shell_basics -l -a /root
+ls -l -a /0x00-shell_basics /.. /root
