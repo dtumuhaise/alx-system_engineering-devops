@@ -1,0 +1,2 @@
+#!bin/bash
+mv betty /temp /my_first_directory
