@@ -1,2 +1,4 @@
 #!/bin/bash
 sudo chown betty
+#!/bin/bash
+sudo chown betty
