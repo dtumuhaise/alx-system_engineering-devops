@@ -2,7 +2,7 @@
 # This script is displaying "Best School" 10 times
 x=1
 while [ $x -le 10 ]
-do 
-	echo "Best School"
-	(( x++ ))
+do
+        echo "Best School"
+        (( x++ ))
 done
