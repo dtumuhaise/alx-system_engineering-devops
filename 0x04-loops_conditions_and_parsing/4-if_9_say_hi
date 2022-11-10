@@ -2,6 +2,7 @@
 # Displays Best school 10 times Hi after the 9th
 
 i=0
+
 while [ $i -lt 10 ]
 do
     if [ $i -eq 9 ]
