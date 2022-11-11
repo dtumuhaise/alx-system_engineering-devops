@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# displays content of current dir in list
+
+for FILE in *; do echo "$FILE" | cut -d '-' -f2; done
