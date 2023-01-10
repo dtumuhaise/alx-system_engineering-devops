@@ -1,3 +1,4 @@
+# create a file in /tmp.
 file {'/tmp/school':
   ensure  => present,
   mode    => '0744',
