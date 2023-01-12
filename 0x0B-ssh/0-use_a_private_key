@@ -6,4 +6,4 @@ keyfile=~/.ssh/school
 username=ubuntu
 host=54.236.26.141
 
-ssh -t -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" "$username"@"$host"
+ssh -i "$keyfile" "$username"@"$host"
