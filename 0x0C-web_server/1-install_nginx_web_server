@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # install nginx
 
+sudo apt-get -y update
 sudo apt-get install -y nginx
 
 sudo sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
