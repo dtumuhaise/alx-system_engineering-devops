@@ -2,8 +2,4 @@
 # script that uses ssh to connect to your server using
 # private key with the user ubuntu
 
-keyfile=~/.ssh/school
-username=ubuntu
-host=54.236.26.141
-
-ssh -i "$keyfile" "$username"@"$host"
+ssh -i ~/.ssh/school ubuntu@54.236.26.141
