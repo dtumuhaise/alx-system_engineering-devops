@@ -2,8 +2,13 @@
 # install nginx
 
 sudo apt-get -y update
-sudo apt-get -y install nginx
-sudo ufw allow "Nginx HTTP"
-sudo chown -R $USER:$USER /var/www/html/index.nginx-debian.html
-sudo echo "Hello World!" > /var/www/html/index.nginx-debian.html
+sudo apt-get install -y nginx
+
+sudo sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
 sudo service nginx restart
+
+response=$(curl -s http://localhost)
+if [[ $response == *"Hello World!"* ]]; then
+    echo "$response"
+fi
