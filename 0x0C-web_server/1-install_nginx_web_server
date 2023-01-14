@@ -1,8 +1,38 @@
 #!/usr/bin/env bash
 # install nginx
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-sudo echo "Hello World!" | sudo tee /var/www/html/index.html
-sudo service nginx start
+# sudo apt-get -y update
+# sudo apt-get -y install nginx
+# sudo ufw allow 'Nginx HTTP'
+# sudo echo "Hello World!" | sudo tee /var/www/html/index.html
+# sudo service nginx start
+#!/bin/bash
+
+# Update package lists
+sudo apt-get update
+
+# Install Nginx
+sudo apt-get install -y nginx
+
+# Remove the default Nginx configuration
+sudo rm /etc/nginx/sites-enabled/default
+
+# Create a new Nginx configuration file
+sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80;
+    root /var/www/html;
+    index index.html;
+    server_name _;
+
+    location / {
+        return 200 "Hello World!";
+    }
+}
+EOF'
+
+# Enable the new configuration
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Restart Nginx
+sudo service nginx restart
