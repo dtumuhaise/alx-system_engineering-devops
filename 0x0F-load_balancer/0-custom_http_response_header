@@ -2,19 +2,9 @@
 # configure web-02 to be identical to web-01
 
 
-# define source and destination servers
-source_server="3.83.18.255"
-destination_server="54.157.152.219"
-
-echo "add_header X-Served-By \$hostname;" >> /etc/nginx/nginx.conf
-
-# get nginx config from source server
-scp $source_server:/etc/nginx/nginx.conf
-
-# copy configuration to destination
-scp nginx.conf $destination_server:/etc/nginx/
-
-
-
-# reload conf on the destination server
-ssh $destination_server "sudo nginx -s reload"
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo service nginx start
+sudo sed -i "11i\\\tadd_header X-served-BY $HOSTNAME;" /etc/nginx/nginx.configure
+echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
+sudo service nginx restart
