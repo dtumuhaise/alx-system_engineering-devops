@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
 # configure web-02 to be identical to web-01
 
-
-# define source and destination servers
-source_server="3.83.18.255"
-destination_server="54.157.152.219"
-
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo service nginx start
+scp ubuntu@3.83.18.255:/etc/nginx/nginx.conf /etc/nginx
 echo "add_header X-Served-By \$hostname;" >> /etc/nginx/nginx.conf
-
-# get nginx config from source server
-scp $source_server:/etc/nginx/nginx.conf
-
-# copy configuration to destination
-scp nginx.conf $destination_server:/etc/nginx/
-
-# reload conf on the destination server
-ssh $destination_server "sudo nginx -s reload"
+sudo service nginx restart
