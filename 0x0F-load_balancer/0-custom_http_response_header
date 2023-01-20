@@ -6,13 +6,15 @@
 source_server="3.83.18.255"
 destination_server="54.157.152.219"
 
+echo "add_header X-Served-By \$hostname;" >> /etc/nginx/nginx.conf
+
 # get nginx config from source server
 scp $source_server:/etc/nginx/nginx.conf
 
 # copy configuration to destination
 scp nginx.conf $destination_server:/etc/nginx/
 
-echo "add_header X-Served-By \$hostname;" >> /etc/nginx/nginx.conf
+
 
 # reload conf on the destination server
 ssh $destination_server "sudo nginx -s reload"
