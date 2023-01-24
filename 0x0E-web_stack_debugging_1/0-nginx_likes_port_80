@@ -2,8 +2,8 @@
 # debugging skills
 
 # check if nginx configuration is set to listen to port 80
-if ! grep -q "listen 80;" /etc/nginx/sites-enabled/*; then
+if ! grep -q "listen 80;" /etc/nginx/sites-enabled/default; then
     echo "nginx not setup to listen to port 80"
-    sed -i 's/listen 80;/listen 8080;/g'
+    sudo sed -i 's/listen 80;/listen 8080;/g'
     sudo service nginx restart
 fi
