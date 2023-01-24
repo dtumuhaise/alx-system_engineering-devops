@@ -1,5 +1,29 @@
 #!/usr/bin/env bash
 # debugging skills
 
-sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
-sudo service nginx restart
+# check if another service is running on port 80
+if lsof -i :80; then
+    echo "Another service is running on port 80"
+    exit 1
+fi
+
+# check if nginx is running
+if ! service nginx status; then
+    echo "nginx isnt running"
+    sudo service nginx start
+fi
+
+# check if nginx configuration is set to listen to port 80
+if ! grep -q "listen 80;" /etc/nginx/sites-enabled/*; then
+    echo "nginx not setup to listen to port 80"
+    sed -i 's/listen 80;/listen 8080;/g'
+    sudo service nginx restart
+fi
+
+# check if firewall is blocking port 80
+if ufw status | grep -q "80"; then
+    echo "firewall is blocking port 80. Allowing traffic on port 80..."
+    ufw allow 80/tcp
+fi
+
+echo "Fix completed. Please check if nginx is listening to port 80 now"
