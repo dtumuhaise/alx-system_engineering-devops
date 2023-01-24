@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 # debugging skills
 
+if ! docker ps | grep -q "nginx"; then
+    echo "Nginx container isnt running. Starting the container..."
+    sudo docker start nginx
+fi
+
+docker exec -it nginx bash <<EOF
+
 # check if another service is running on port 80
 if lsof -i :80; then
     echo "Another service is running on port 80"
