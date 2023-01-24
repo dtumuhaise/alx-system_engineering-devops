@@ -34,3 +34,4 @@ if ufw status | grep -q "80"; then
 fi
 
 echo "Fix completed. Please check if nginx is listening to port 80 now"
+EOF
