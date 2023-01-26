@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # debugging skills
 
-sudo sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
 sudo sed -i "s/sites-enabled/sites-available/" /etc/nginx/nginx.conf
 sudo service nginx restart
