@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # short and sweet
-if !service nginx status; then
+if ! service nginx status; then
     echo "nginx is not running"
 fi
