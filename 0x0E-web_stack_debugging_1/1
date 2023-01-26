@@ -1,3 +1,0 @@
- * nginx is running
-ERROR: You need to be root to run this script
-Fix completed. Please check if nginx is listening to port 80 now
