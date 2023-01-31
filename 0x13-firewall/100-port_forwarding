@@ -79,5 +79,3 @@
 # redirect incoming traffic from port 8080 to port 80
 -A ufw-before-input -p tcp --dport 8080 -j REDIRECT --to-port 80
 COMMIT
-
-
