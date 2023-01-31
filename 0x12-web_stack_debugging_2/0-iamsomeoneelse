@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# run the whoami command under user passed as argument
+
+sudo runuser -l $1 -c 'whoami'
