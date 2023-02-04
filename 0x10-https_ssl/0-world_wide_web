@@ -1,2 +1,21 @@
 #!/usr/bin/env bash
 # configure domain zone
+
+function display_info() {
+    local domain="$1"
+    local subdomain="$2"
+    local subdomains=("www" "lb-01" "web-01" "web-02")
+
+    if [[ -z "$subdomain" ]]; then
+        for sub in "${subdomains[@]}"; do
+            dig "$sub.$domain" +short | awk '{print "The subdomain '"$sub"' is a A record and points to "$1}'
+        done
+    else
+        dig "$subdomain.$domain" +short | awk '{print "The subdomain '"$subdomain"' is a A record and points to "$1}'
+    fi
+}
+
+domain="$1"
+subdomain="$2"
+
+display_info "$domain" "$subdomain"
