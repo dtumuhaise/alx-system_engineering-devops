@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # run nginx as nginx
 
-sudo service nginx stop
-sudo sed -i 's/listen.*/listen 0.0.0.0:8080;/' /etc/nginx/sites-available/default
-sudo sed -i 's/user.*/user nginx;/' /etc/nginx/nginx.conf
-sudo service nginx start
+# sudo service nginx stop
+# sudo sed -i 's/listen.*/listen 0.0.0.0:8080;/' /etc/nginx/sites-available/default
+# sudo sed -i 's/user.*/user nginx;/' /etc/nginx/nginx.conf
+# sudo service nginx start
+chmod 644 /etc/nginx/nginx.conf
+sed -Ei 's/\s*#?\s*user .*/user nginx;/' /etc/nginx/nginx.conf
+sed -Ei 's/(listen (\[::\]:)?80) /\180 /' /etc/nginx/sites-enabled/default
+pkill apache2
+su nginx -s /bin/bash -c 'service nginx restart'
