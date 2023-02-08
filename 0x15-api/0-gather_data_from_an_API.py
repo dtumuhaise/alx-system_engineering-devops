@@ -16,14 +16,16 @@ def main(employee_id):
         .format(employee_id)
     response = requests.get(url)
     user = response.json()
-    name = user['name']
+    EMPLOYEE_NAME = user['name']
 
-    completed_tasks = [task["title"] for task in todos if task["completed"]]
-    total_tasks = len(todos)
-    done_tasks = len(completed_tasks)
+    completed_tasks = \
+        [TASK_TITLE["title"]
+            for TASK_TITLE in todos if TASK_TITLE["completed"]]
+    TOTAL_NUMBER_OF_TASKS = len(todos)
+    NUMBER_OF_DONE_TASKS = len(completed_tasks)
 
     print("Employee {} is done with tasks({}/{}):".format(
-        name, done_tasks, total_tasks))
+        EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
     for task in completed_tasks:
         print("\t {}".format(task))
 
