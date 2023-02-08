@@ -6,22 +6,30 @@ import requests
 from sys import argv
 
 
-def main():
-    url = "https://jsonplaceholder.typicode.com/"
-    response = requests.get(url + "users/{}".format(argv[1]))
-    users = response.json()
-
-    response = requests.get(url + "todos", params={"userId": argv[1]})
+def main(employee_id):
+    url = "https://jsonplaceholder.typicode.com/todos?userId={}" \
+        .format(employee_id)
+    response = requests.get(url)
     todos = response.json()
 
-    completed_tasks = [tasks.get("title")
-                       for tasks in todos if tasks.get("completed") is True]
+    url = "https://jsonplaceholder.typicode.com/users/{}" \
+        .format(employee_id)
+    response = requests.get(url)
+    user = response.json()
+    EMPLOYEE_NAME = user['name']
+
+    completed_tasks = \
+        [TASK_TITLE["title"]
+            for TASK_TITLE in todos if TASK_TITLE["completed"]]
+    TOTAL_NUMBER_OF_TASKS = len(todos)
+    NUMBER_OF_DONE_TASKS = len(completed_tasks)
 
     print("Employee {} is done with tasks({}/{}):".format(
-        users.get("name"), len(completed_tasks), len(todos)))
-    for task in completed_tasks:
-        print("\t {}".format(task))
+        EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
+    for TASK_TITLE in completed_tasks:
+        print("\t {}".format(TASK_TITLE))
 
 
 if __name__ == "__main__":
-    main()
+    employee_id = int(argv[1])
+    main(employee_id)
