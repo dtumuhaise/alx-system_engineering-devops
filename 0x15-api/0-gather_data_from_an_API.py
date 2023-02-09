@@ -6,14 +6,14 @@ import requests
 from sys import argv
 
 
-def main(id):
+def main(userId):
     todo_url = "https://jsonplaceholder.typicode.com/todos?userId={}" \
-        .format(id)
+        .format(userId)
     response = requests.get(todo_url)
     todos = response.json()
 
     users_url = "https://jsonplaceholder.typicode.com/users/{}" \
-        .format(id)
+        .format(userId)
     response = requests.get(users_url)
     user = response.json()
     EMPLOYEE_NAME = user['name']
@@ -31,5 +31,5 @@ def main(id):
 
 
 if __name__ == "__main__":
-    id = int(argv[1])
-    main(id)
+    userId = int(argv[1])
+    main(userId)
