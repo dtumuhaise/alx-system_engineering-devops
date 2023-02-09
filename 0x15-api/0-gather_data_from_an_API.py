@@ -7,14 +7,14 @@ from sys import argv
 
 
 def main(employee_id):
-    url = "https://jsonplaceholder.typicode.com/todos?userId={}" \
+    todo_url = "https://jsonplaceholder.typicode.com/todos?userId={}" \
         .format(employee_id)
-    response = requests.get(url)
+    response = requests.get(todo_url)
     todos = response.json()
 
-    url = "https://jsonplaceholder.typicode.com/users/{}" \
+    users_url = "https://jsonplaceholder.typicode.com/users/{}" \
         .format(employee_id)
-    response = requests.get(url)
+    response = requests.get(users_url)
     user = response.json()
     EMPLOYEE_NAME = user['name']
 
