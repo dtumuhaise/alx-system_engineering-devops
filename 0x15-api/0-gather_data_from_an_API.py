@@ -32,4 +32,7 @@ def main(userId):
 
 if __name__ == "__main__":
     userId = int(argv[1])
-    main(userId)
+    if userId <= 10:
+        main(userId)
+    else:
+        print("user doesnt exist")
