@@ -17,11 +17,11 @@ def main(userId):
         .format(userId)
     response = requests.get(users_url)
     user = response.json()
-    EMPLOYEE_NAME = user['name']
+    EMPLOYEE_NAME = user.get('name')
 
     completed_tasks = \
-        [TASK_TITLE["title"]
-            for TASK_TITLE in todos if TASK_TITLE["completed"]]
+        [TASK_TITLE.get("title")
+            for TASK_TITLE in todos if TASK_TITLE.get("completed")]
     TOTAL_NUMBER_OF_TASKS = len(todos)
     NUMBER_OF_DONE_TASKS = len(completed_tasks)
 
