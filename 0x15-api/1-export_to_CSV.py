@@ -17,7 +17,7 @@ def main(userId):
         .format(userId)
     response = requests.get(users_url)
     user = response.json()
-    username = user.get('name')
+    username = user.get('username')
 
     with open("{}.csv".format(userId), "w", newline="") as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
