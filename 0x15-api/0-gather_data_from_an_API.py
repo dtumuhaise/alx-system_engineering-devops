@@ -2,9 +2,9 @@
 """ REST api script """
 
 
+import json
 import requests
 from sys import argv
-import json
 
 
 def main(userId):
