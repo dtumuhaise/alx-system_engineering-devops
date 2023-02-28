@@ -14,7 +14,7 @@ def recurse(subreddit, hot_list=[]):
     endpoint = 'https://www.reddit.com/r/{}/hot.json?limit=10'\
         .format(subreddit)
     response = requests.get(endpoint)
-    if response.status_code != 200:
+    if response.status_code != 404:
         return None
     else:
         data = response.json()
