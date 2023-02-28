@@ -13,10 +13,12 @@ def top_ten(subreddit):
 
     endpoint = 'https://www.reddit.com/r/{}/hot.json?limit=10'\
         .format(subreddit)
-    response = requests.get(endpoint)
+
+    headers = {'User-Agent': 'My-User-Agent'}
+    response = requests.get(endpoint, headers=headers, allow_redirects=False)
 
     if response.status_code != 200:
-        print(None)
+        print('None')
     else:
         data = response.json()
         posts = data['data']['children']
