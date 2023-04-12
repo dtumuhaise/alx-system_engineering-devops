@@ -1,17 +1,12 @@
 #!/usr/bin/python3
-
-"""recursive function that queries the Reddit API,
-parses the title of all hot articles, and prints a sorted count of given
-keywords (case-insensitive, delimited by spaces.
-Javascript should count as javascript, but java should not)"""
+""" recursive function that queries the Reddit API"""
 
 import requests
+import re
 
-
-def count_words(subreddit, word_list, after=None, hot_list=[]):
-    """ function that queries the Reddit API and prints the titles of the
-    first 10 hot posts listed for a given subreddit."""
-
+def count_words(subreddit, word_list, after=None, titles=''):
+    """ function that queries the Reddit API,"""
+    
     endpoint = 'https://www.reddit.com/r/{}/hot.json?limit=100'\
         .format(subreddit)
 
@@ -26,22 +21,20 @@ def count_words(subreddit, word_list, after=None, hot_list=[]):
         data = response.json()
         posts = data['data']['children']
         for post in posts:
-            hot_list.append(post['data']['title'])
+            titles += post['data']['title'] + ' '
         after = data['data']['after']
         if after is not None:
-            return count_words(subreddit, word_list, after, hot_list)
+            return count_words(subreddit, word_list, after, titles)
         else:
             word_dict = {}
-            for word in word_list:
+            for word in set(word_list):
                 word_dict[word] = 0
-            for title in hot_list:
-                words = title.split()
-                for word in words:
-                    word = word.lower()
-                    if word in word_dict:
-                        word_dict[word] += 1
+            for title in titles.split('\n'):
+                title = title.lower()
+                for word in set(word_list):
+                    matches = re.findall(r'\b{}\b'.format(word.lower()), title)
+                    word_dict[word] += len(matches)
             for key, value in sorted(word_dict.items(),
-                                     key=lambda item: item[1],
-                                     reverse=True):
+                                     key=lambda item: (-item[1], item[0])):
                 if value != 0:
-                    print('{}: {}'.format(key, value))
+                    print('{}: {}'.format(key.lower(), value))
