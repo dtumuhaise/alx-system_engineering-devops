@@ -1,32 +1,47 @@
 #!/usr/bin/python3
-"""recursive function that queries the Reddit API"""
+
+"""recursive function that queries the Reddit API,
+parses the title of all hot articles, and prints a sorted count of given
+keywords (case-insensitive, delimited by spaces.
+Javascript should count as javascript, but java should not)"""
 
 import requests
 
 
-def recurse(subreddit, hot_list=[], after="", count=0):
-    """Returns a list of titles of all hot posts on a given subreddit."""
+def count_words(subreddit, word_list, after=None, hot_list=[]):
+    """ function that queries the Reddit API and prints the titles of the
+    first 10 hot posts listed for a given subreddit."""
 
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)"
-    }
-    params = {
-        "after": after,
-        "count": count,
-        "limit": 100
-    }
-    response = requests.get(url, headers=headers, params=params,
+    endpoint = 'https://www.reddit.com/r/{}/hot.json?limit=100'\
+        .format(subreddit)
+
+    headers = {'User-Agent': 'My-User-Agent'}
+    params = {'after': after}
+    response = requests.get(endpoint, headers=headers, params=params,
                             allow_redirects=False)
-    if response.status_code == 404:
+
+    if response.status_code != 200:
         return None
-
-    results = response.json().get("data")
-    after = results.get("after")
-    count += results.get("dist")
-    for c in results.get("children"):
-        hot_list.append(c.get("data").get("title"))
-
-    if after is not None:
-        return recurse(subreddit, hot_list, after, count)
-    return
+    else:
+        data = response.json()
+        posts = data['data']['children']
+        for post in posts:
+            hot_list.append(post['data']['title'])
+        after = data['data']['after']
+        if after is not None:
+            return count_words(subreddit, word_list, after, hot_list)
+        else:
+            word_dict = {}
+            for word in word_list:
+                word_dict[word] = 0
+            for title in hot_list:
+                words = title.split()
+                for word in words:
+                    word = word.lower()
+                    if word in word_dict:
+                        word_dict[word] += 1
+            for key, value in sorted(word_dict.items(),
+                                     key=lambda item: item[1],
+                                     reverse=True):
+                if value != 0:
+                    print('{}: {}'.format(key, value))
