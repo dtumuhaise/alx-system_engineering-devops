@@ -7,11 +7,13 @@ hot articles for a given  """
 import requests
 
 
-def recurse(subreddit, hot_list=[]):
+def recurse(subreddit, hot_list=[], count=0, after=None):
     """ defining the function """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {'User-Agent': 'Agent'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    params = {'limit': 100, 'after': after}
+    response = requests.get(url, headers=headers,
+                            params=params, allow_redirects=False)
     if response.status_code != 200:
         return None
     else:
@@ -22,4 +24,4 @@ def recurse(subreddit, hot_list=[]):
         after = data['data']['after']
         if after is None:
             return hot_list
-        return recurse(subreddit, hot_list)
+        return recurse(subreddit, hot_list, count, after)
