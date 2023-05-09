@@ -9,32 +9,36 @@ delimited by spaces.
 import requests
 
 
-def count_words(subreddit, word_list, after=None, word_dic={}):
+def count_words(subreddit, word_list, after=None, counts=None):
     """ defining the function """
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {'User-Agent': 'Agent'}
-    params = {'limit': 100, 'after': after}
-    response = requests.get(url, headers=headers,
-                            params=params, allow_redirects=False)
-    if response.status_code != 200:
-        return None
+    if counts is None:
+        counts = {}
+
+    headers = {'User-Agent': 'Mozilla/5.0'}
+
+    if after:
+        url = "https://www.reddit.com/r/{}/hot.json?after={}".format(
+            subreddit, after)
     else:
+        url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
         data = response.json()
-        posts = data['data']['children']
-        for post in posts:
-            title = post['data']['title'].lower().split()
+        articles = data['data']['children']
+
+        for article in articles:
+            title = article['data']['title']
             for word in word_list:
-                if word.lower() in title:
-                    if word not in word_dic.keys():
-                        word_dic[word] = 1
-                    else:
-                        word_dic[word] += 1
+                if word.lower() in title.lower().split():
+                    counts[word.lower()] = counts.get(word.lower(), 0) + 1
+
         after = data['data']['after']
-        if after is None:
-            if len(word_dic) == 0:
-                return
-            for key, value in sorted(word_dic.items(),
-                                     key=lambda x: (-x[1], x[0])):
-                print("{}: {}".format(key, value))
-            return
-        return count_words(subreddit, word_list, after, word_dic)
+        if after is not None:
+            return count_words(subreddit, word_list, after, counts)
+        else:
+            sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+
+            for word, count in sorted_counts:
+                print("{}: {}".format(word, count))
